@@ -4,7 +4,7 @@
     window.fetch.call = function() {
         if (!arguments[1].includes("s.blooket.com/rc")) return wfcall.apply(this, arguments);
     }
-    if (console.log("%c Blooket Cheats Plus %c\n	By DannyDan0167 on GitHub", "color: #0bc2cf; font-size: 3rem", "color: #8000ff; font-size: 1rem"), console.log("%c	gui.js", "color: #0bc2cf; font-size: 1rem"), console.log("%c	Star the github repo!%c  https://github.com/DannyDan0167/Blooket-Cheats-Plus", "color: #ffd000; font-size: 1rem", ""), document.querySelector("script[src*='bfs/index.js']") && !window.clearId) {
+    if (console.log("%c Blooket Cheats Plus %c\n	By DannyDan0167 and CryptoDude3 on GitHub", "color: #0bc2cf; font-size: 3rem", "color: #8000ff; font-size: 1rem"), console.log("%c	gui.js", "color: #0bc2cf; font-size: 1rem"), console.log("%c	Star the github repo!%c  https://github.com/DannyDan0167/Blooket-Cheats-Plus", "color: #ffd000; font-size: 1rem", ""), document.querySelector("script[src*='bfs/index.js']") && !window.clearId) {
         for (var e, t, a, o, r, i, n, s, e = document.createElement("iframe"), t = (document.body.appendChild(e), window.clearId = window.setInterval(() => {}, 0)); t--;) e.contentWindow.clearInterval.call(window, t);
         e.remove()
     }
@@ -2339,14 +2339,9 @@
                 } else {
                     this.enabled = !0;
                     let t = () => {
-                        var o = [];
-                        const char = eval('"\\u0e47"');
-                        for (let r = 0; r < 999; r++) {
-                            o.push(char.repeat(70));
-                        }
                         a.props.liveGameController.setVal({
                             path: `c/${a.props.client.name}/cr`,
-                            val: `9999999999999999999999999999999999999999999999${o.join(" ")}`
+                            val: `9999999999999999999999999999999999999999999999${new Array(999).fill("\u0e47".repeat(70)).join(" ")}`
                         });
                     };
                     this.data = setInterval(t, 25);
@@ -2356,7 +2351,7 @@
             name: "Remove Hack",
             description: "Removes an attacking hack",
             run: function() {
-                Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode.setState({
+                Object.values(document.querySelector("#app>div>div"))[1].children[0]._owner.stateNode.setState({
                     hack: ""
                 })
             }
@@ -2373,12 +2368,8 @@
                     crypto: e,
                     crypto2: e
                 }), t.props.liveGameController.setVal({
-                    path: "c/".concat(t.props.client.name),
-                    val: {
-                        b: t.props.client.blook,
-                        p: t.state.password,
-                        cr: e
-                    }
+                    path: "c/"+t.props.client.name+"/cr",
+                    val: e
                 })
             }
         }, {
@@ -2393,12 +2384,8 @@
                 t.setState({
                     password: e
                 }), t.props.liveGameController.setVal({
-                    path: "c/".concat(t.props.client.name),
-                    val: {
-                        b: t.props.client.blook,
-                        p: e,
-                        cr: t.state.crypto
-                    }
+                    path: "c/"+t.props.client.name+"/p",
+                    val: e
                 })
             }
         }, {
@@ -2413,12 +2400,10 @@
                 document.body.append(t), window.prompt = t.contentWindow.prompt.bind(window), t.remove();
                 var a = Object.values(function e(t = document.querySelector("#app")) {
                         return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"))
-                    }())[1].children[0]._owner.stateNode,
-                    o = [];
-                for (let r = 0; r < 999; r++) o.push(e);
+                    }())[1].children[0]._owner.stateNode;
                 a.props.liveGameController.setVal({
                     path: `c/${a.props.client.name}/cr`,
-                    val: `9999999999999999999999999999999999999999999999${o.join(" ")}`
+                    val: `9999999999999999999999999999999999999999999999${new Array(999).fill(e).join(" ")}`
                 })
             }
         }, {

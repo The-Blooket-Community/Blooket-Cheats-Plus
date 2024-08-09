@@ -4,7 +4,7 @@
     window.fetch.call = function() {
         if (!arguments[1].includes("s.blooket.com/rc")) return wfcall.apply(this, arguments);
     }
-    if (console.log("%c Blooket Cheats Plus %c\n	By DannyDan0167 and CryptoDude3 on GitHub", "color: #0bc2cf; font-size: 3rem", "color: #8000ff; font-size: 1rem"), console.log("%c	gui.js", "color: #0bc2cf; font-size: 1rem"), console.log("%c	Star the github repo!%c  https://github.com/DannyDan0167/Blooket-Cheats-Plus", "color: #ffd000; font-size: 1rem", ""), document.querySelector("script[src*='bfs/index.js']") && !window.clearId) {
+    if (console.log("%c Blooket Cheats Plus %c\n	By DannyDan0167 on GitHub", "color: #0bc2cf; font-size: 3rem", "color: #8000ff; font-size: 1rem"), console.log("%c	gui.js", "color: #0bc2cf; font-size: 1rem"), console.log("%c	Star the github repo!%c  https://github.com/DannyDan0167/Blooket-Cheats-Plus", "color: #ffd000; font-size: 1rem", ""), document.querySelector("script[src*='bfs/index.js']") && !window.clearId) {
         for (var e, t, a, o, r, i, n, s, e = document.createElement("iframe"), t = (document.body.appendChild(e), window.clearId = window.setInterval(() => {}, 0)); t--;) e.contentWindow.clearInterval.call(window, t);
         e.remove()
     }
@@ -2073,8 +2073,16 @@
             name: "Spam Attack Player",
             description: "Attacks the player to make the game unplayable",
             inputs: [{
-                name: "Player's Name",
-                type: "text"
+                name: "Player",
+                type: "options",
+                options() {
+                    let {
+                        stateNode: e
+                    } = Object.values(function e(t = document.querySelector("body>div")) {
+                        return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"))
+                    }())[1].children[0]._owner;
+                    return new Promise(t => e.props.liveGameController._liveApp ? e.props.liveGameController.getDatabaseVal("c", e => e && t(Object.keys(e))) : t([]))
+                }
             }],
             type: "toggle",
             enabled: false,
@@ -4630,6 +4638,44 @@
                     }
                 });
             }
+        }, {
+            name: "Attack Player",
+            description: "Sends the specified attack to a player",
+            inputs: [{
+                name: "Player",
+                type: "options",
+                options() {
+                    let {
+                        stateNode: e
+                    } = Object.values(function e(t = document.querySelector("body>div")) {
+                        return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"))
+                    }())[1].children[0]._owner;
+                    return new Promise(t => e.props.liveGameController._liveApp ? e.props.liveGameController.getDatabaseVal("c", e => e && t(Object.keys(e))) : t([]))
+                }
+            },{
+				name: "Attack",
+				type: "options",
+				options: Object.entries({
+				"Woosh(-1)":"wind",
+				"Rocket(-1)":"rocket",
+				"Fire(-3)":"fire",
+				"Freeze":"freeze"
+				}).map(([e, t]) => ({
+                    name: e,
+                    value: t
+                }))
+			}],
+            run: function(player,attack) {
+                let {
+                    stateNode
+                } = Object.values((function react(r = document.querySelector("body>div")) {
+                    return Object.values(r)[1]?.children?.[0]?._owner.stateNode ? r : react(r.querySelector(":scope>div"))
+                })())[1].children[0]._owner;
+                stateNode.props.liveGameController.setVal({
+                    path: `c/${stateNode.props.client.name}/tat`,
+                    val: player+":"+attack
+                });
+            }
         }],
         extras: [{
             name: "Toggle Invert Colors",
@@ -5938,6 +5984,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+								break;
                                 case "classic":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -5947,6 +5994,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+								break;
                                 case "royale":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -5956,6 +6004,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+								break;
                                 case "workshop":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -5965,6 +6014,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+								break;
                                 case "brawl":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -5974,6 +6024,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+								break;
                                 case "defense":
                                 case "defense2":
                                     m = Object.entries(r).map(([e, {
@@ -5984,6 +6035,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+									break;
                                 case "gold":
                                     for (let $ in h) h[$].tat?.split && ([i, n] = h[$].tat.split(":"), "swap" == n ? this.addAlert($, t[r[$].b]?.url, "just swapped with " + i) : this.addAlert($, t[r[$].b]?.url, `just took ${this.parseNumber(parseInt(n))} gold from ` + i));
                                     m = Object.entries(r).map(([e, {
@@ -6182,8 +6234,8 @@
                 };
             t.addEventListener("keydown", l), t.addEventListener("keyup", c)
         })
-    }
-    if (_.addEventListener("mousemove", e => {
+    };
+	_.addEventListener("mousemove", e => {
             var t, a;
             "cheatName" != e.target.className && "scriptButton" != e.target.className ? "0" != y.style.opacity && (y.animate([{
                 opacity: .9
@@ -6198,10 +6250,8 @@
             }], {
                 duration: 200
             }), y.style.opacity = "0.9"), y.style.left = t.x - a.x + (t.width - y.clientWidth) / 2 + "px", y.style.top = t.y - a.y + t.height + "px"))
-        }), String(window.fetch.call).includes("native code")) {
-        window.fetch.call = function() {
+        }),window.fetch.call = function() {
             if (!arguments[1].includes("s.blooket.com/rc")) return wfcall.apply(this, arguments);
-            C.alerts?.[0].addLog("Blooket Anti-Cheat Blocked!")
+            C.alerts?.[0].addLog("Blooket Cheat Report Blocked!")
         }
-    } else console.log("already run")
 })();

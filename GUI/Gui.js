@@ -294,6 +294,7 @@
             position: "absolute",
             left: "220px",
             top: "70px",
+			overflowY:"scroll",
             width: "calc(100% - 220px)",
             height: "calc(100% - 70px)",
             borderRadius: "7px"

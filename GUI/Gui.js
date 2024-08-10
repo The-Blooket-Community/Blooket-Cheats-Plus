@@ -294,7 +294,6 @@
             position: "absolute",
             left: "220px",
             top: "70px",
-            overflowY: "scroll",
             width: "calc(100% - 220px)",
             height: "calc(100% - 70px)",
             borderRadius: "7px"
@@ -386,6 +385,14 @@
             onclick: () => k(r.innerText, a, o)
         });
         return h.appendChild(r), r.onclick
+    }
+	function insertElemBefore(name, imgSrc, a, o, elem) {
+        let r = l("div", {
+            className: "cheatButton",
+            innerHTML: ("string" == typeof imgSrc ? `<img style="height: 30px; margin-right: 5px" src="${imgSrc}">` : imgSrc || "") + name,
+            onclick: () => k(r.innerText, a, o)
+        });
+        return h.insertBefore(r,elem), r.onclick
     }
     async function k(e, t, a) {
         b.innerHTML = "", v.firstChild.innerText = e + (a ? "" : " Cheats"), b.append(v);
@@ -5864,64 +5871,7 @@
                 return t
             },
             addLeaderboard() {
-                this.element.append(this.leaderboardEl = l("div", {
-                    id: "leaderboardContent",
-                    style: {
-                        position: "absolute",
-                        inset: "110% 0px",
-                        marginTop: "30px"
-                    }
-                }, l("div", {
-                    style: {
-                        alignItems: "center",
-                        boxSizing: "border-box",
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        justifyContent: "space-evenly",
-                        padding: "20px 5px 20px",
-                        position: "relative",
-                        width: "100%",
-                        fontFamily: "Nunito, sans-serif",
-                        fontWeight: "400",
-                        color: "var(--textColor)",
-                        background: "var(--contentBackground)",
-                        boxShadow: "inset 0 -6px rgb(0 0 0 / 20%)",
-                        borderRadius: "7px"
-                    }
-                }, l("div", {
-                    className: "headerText",
-                    style: {
-                        boxSizing: "border-box",
-                        display: "block",
-                        height: "45px",
-                        left: "-10px",
-                        padding: "4px 4px 8px",
-                        position: "absolute",
-                        top: "-28px",
-                        backgroundColor: "#ef7426",
-                        boxShadow: "0 4px rgb(0 0 0 / 20%), inset 0 -4px rgb(0 0 0 / 20%)",
-                        borderRadius: "7px"
-                    }
-                }, l("div", {
-                    style: {
-                        alignItems: "center",
-                        boxSizing: "border-box",
-                        display: "flex",
-                        height: "100%",
-                        justifyContent: "center",
-                        padding: "0 15px",
-                        width: "100%",
-                        fontFamily: "Titan One, sans-serif",
-                        fontSize: "26px",
-                        fontWeight: "400",
-                        textShadow: "-1px -1px 0 #646464, 1px -1px 0 #646464, -1px 1px 0 #646464, 2px 2px 0 #646464",
-                        color: "white",
-                        background: "linear-gradient(#fcd843,#fcd843 50%,#feb31a 50.01%,#feb31a)",
-                        borderRadius: "5px"
-                    },
-                    innerText: "Leaderboard"
-                })), l("div", {
+                this.leaderboardEl = l("div", {
                     className: "alertContainer",
                     style: {
                         margin: "15px 15px 5px 15px",
@@ -5944,8 +5894,9 @@
                         overflowY: "scroll",
                         wordWrap: "break-word"
                     }
-                })))));
-                this.addLog("Leaderboard Loaded! Scroll down to see it.");
+                }));
+				insertElemBefore("Leaderboard", "https://i.ibb.co/hZQjjVP/trophy-icon.webp", [{element:this.leaderboardEl}], !0, h.children[3]);
+                this.addLog("Leaderboard Loaded!");
             },
             async connect() {
                 try {
@@ -5973,7 +5924,7 @@
                         if (r && this.diffObjects(this.data, r)) {
                             var i, n, s, l, c, d, p, u, h = this.diffObjects(this.data, r);
                             this.data = r;
-                            let m;
+                            let m = [];
                             switch (a) {
                                 case "racing":
                                     m = Object.entries(r).map(([e, {
@@ -6105,7 +6056,7 @@
                                         value: a || 0
                                     }))
                             }
-                            this.updateLeaderboard(m.sort((e, t) => t.value - e.value))
+                            this.updateLeaderboard(m.sort((e, t) => t.value - e.value));
                         }
                     })
                 } catch {
@@ -6177,7 +6128,7 @@
                 }
             }
         }]
-    };
+};
 
     function S(e, t) {
         var a, o, r = 0,

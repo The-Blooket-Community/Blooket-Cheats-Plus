@@ -2454,6 +2454,27 @@
                 })
             }
         }, {
+            name: "Get Player's Password",
+            description: "Shows the password of any player in an alert box",
+            inputs: [{
+                name: "Player",
+                type: "options",
+                options() {
+                    let e = Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode;
+                    return new Promise(t => e.props.liveGameController._liveApp ? e.props.liveGameController.getDatabaseVal("c", e => e && t(Object.keys(e))) : t([]))
+                }
+            }],
+            run: function(player) {
+			    let i = document.createElement('iframe');
+                document.body.append(i);
+                const alert = i.contentWindow.alert.bind(window);
+                i.remove();
+                var t = Object.values(document.querySelector("#app>div>div"))[1].children[0]._owner.stateNode;
+				t.props.liveGameController.getDatabaseVal("c", e => {
+				alert(e?.[player]?.p);
+				});
+            }
+        }, {
             name: "Send Ad Text",
             description: "Sends a load of text to another player (This will override your blook!)",
             inputs: [{
@@ -5926,7 +5947,17 @@
                             var i, n, s, l, c, d, p, u, h = this.diffObjects(this.data, r);
                             this.data = r;
                             let m = [];
-                            switch (a) {
+                            switch (this.getGamemode()) {
+							    case "pirate":
+								m = Object.entries(r).map(([e, {
+                                        b: t,
+                                        d: a
+                                    }]) => ({
+                                        name: e,
+                                        blook: t,
+                                        value: a || 0
+                                    }));
+								break;
                                 case "racing":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -5957,7 +5988,7 @@
                                         value: a || 0
                                     }));
 								break;
-                                case "workshop":
+                                case "toy":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
                                         t: a
@@ -6071,6 +6102,7 @@
                 return 0 == Object.keys(o).length ? null : o
             },
             getGamemode() {
+			if(Object.values(document.querySelector("#app>div>div"))[1].children[0]._owner.stateNode.props?.client?.type){return Object.values(document.querySelector("#app>div>div"))[1].children[0]._owner.stateNode.props.client.type.toLowerCase();}
                 switch (window.location.pathname) {
                     case "/play/racing":
                         return "racing";
@@ -6095,7 +6127,7 @@
                     case "/play/battle-royale/match/result":
                         return "royale";
                     case "/play/toy":
-                        return "workshop";
+                        return "toy";
                     case "/play/gold":
                         return "gold";
                     case "/play/brawl":

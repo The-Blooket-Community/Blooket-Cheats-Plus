@@ -13,6 +13,7 @@
 - [x] Anti-Ban
 - [x] Use any Banner
 - [x] Change Name ingame
+- [x] In-Game Leaderboard
 
 
 ## Star History

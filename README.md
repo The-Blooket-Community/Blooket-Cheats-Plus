@@ -10,7 +10,7 @@
 - [ ] Bypass CSP (WIP)
 - [ ] Auto Play (who really wants this?)
 - [x] GUI Chat for other cheaters (Crossover with BlooketBot)
-- [x] Anti-Ban
+- [x] Anti-Ban (Stuff like daily rewards still get you banned, so don't use it too often)
 - [x] Use any Banner
 - [x] Change Name ingame
 - [x] In-Game Leaderboard

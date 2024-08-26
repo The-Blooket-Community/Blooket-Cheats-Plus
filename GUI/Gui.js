@@ -1071,6 +1071,25 @@
                     val: e
                 })
             }
+        },{
+            name: "Set Custom Blook URL",
+            description: "Sets a custom image as your blook.",
+            inputs: [{
+                name: "URL",
+                type: "input",
+            }],
+            run: function(e) {
+                let t = Object.values(function e(t = document.querySelector("body>div")) {
+                    return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"));
+                }())[1].children[0]._owner.stateNode;
+                if (!t.state.unlocks) {
+                    t.client.blook = e;
+                }
+                t.props.liveGameController.setVal({
+                    path: `c/${t.props.client.name}/b`,
+                    val: e
+                });
+            }
         }, {
             name: "Set Blook Ad Text",
             description: "Sets a load of text as your blook and floods teachers screen on lobby",

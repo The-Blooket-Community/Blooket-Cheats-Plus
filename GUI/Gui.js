@@ -1083,7 +1083,7 @@
                     return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"));
                 }())[1].children[0]._owner.stateNode;
                 if (!t.state.unlocks) {
-                    t.client.blook = e;
+                    t.props.client.blook = e;
                 }
                 t.props.liveGameController.setVal({
                     path: `c/${t.props.client.name}/b`,

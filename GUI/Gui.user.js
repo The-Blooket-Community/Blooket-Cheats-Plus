@@ -1,29 +1,12 @@
 // ==UserScript==
 // @name         Blooket Cheats Plus
 // @namespace    https://github.com/DannyDan0167/Blooket-Cheats
-// @version      15.3
+// @version      15.4
 // @description  Blooket Cheats Plus
 // @updateURL    https://raw.githubusercontent.com/DannyDan0167/Blooket-Cheats-Plus/main/Update/Gui.meta.js
 // @downloadURL  https://raw.githubusercontent.com/DannyDan0167/Blooket-Cheats-Plus/main/GUI/Gui.user.js
 // @author       DannyDan0167
-// @match        https://dashboard.blooket.com/*
-// @match        https://play.blooket.com/*
-// @match        https://towerdefense2.blooket.com/*
-// @match        https://monsterbrawl.blooket.com/*
-// @match        https://towerdefense.blooket.com/*
-// @match        https://cafe.blooket.com/*
-// @match        https://factory.blooket.com/*
-// @match        https://crazykingdom.blooket.com/*
-// @match        https://towerofdoom.blooket.com/*
-// @match        https://goldquest.blooket.com/*
-// @match        https://cryptohack.blooket.com/*
-// @match        https://fishingfrenzy.blooket.com/*
-// @match        https://deceptivedinos.blooket.com/*
-// @match        https://battleroyale.blooket.com/*
-// @match        https://racing.blooket.com/*
-// @match        https://blookrush.blooket.com/*
-// @match        https://classic.blooket.com/*
-// @match        https://pirate.blooket.com/*
+// @match        *://*.blooket.com/*
 // @icon         https://i.ibb.co/sWqBm0K/1024.png
 // @grant        none
 // @require     https://unpkg.com/idb-keyval@6.0.3/dist/umd.js
@@ -302,7 +285,7 @@
             display: "flex",
             flexDirection: "column"
         },
-        innerHTML: '<span style="text-shadow: 1px 1px rgb(0 0 0 / 40%); font-size: 0.8em;">Cheats<sup>v15.3</sup></span>'
+        innerHTML: '<span style="text-shadow: 1px 1px rgb(0 0 0 / 40%); font-size: 0.8em;">Cheats<sup>v15.4</sup></span>'
     }, l("a", {
         className: "bigButton",
         style: {
@@ -417,6 +400,15 @@
             onclick: () => k(r.innerText, a, o)
         });
         return h.appendChild(r), r.onclick
+    }
+
+    function insertElemBefore(name, imgSrc, a, o, elem) {
+        let r = l("div", {
+            className: "cheatButton",
+            innerHTML: ("string" == typeof imgSrc ? `<img style="height: 30px; margin-right: 5px" src="${imgSrc}">` : imgSrc || "") + name,
+            onclick: () => k(r.innerText, a, o)
+        });
+        return h.insertBefore(r, elem), r.onclick
     }
     async function k(e, t, a) {
         b.innerHTML = "", v.firstChild.innerText = e + (a ? "" : " Cheats"), b.append(v);
@@ -1095,6 +1087,25 @@
                 })
             }
         }, {
+            name: "Set Custom Blook URL",
+            description: "Sets a custom image as your blook.",
+            inputs: [{
+                name: "URL",
+                type: "input",
+            }],
+            run: function(e) {
+                let t = Object.values(function e(t = document.querySelector("body>div")) {
+                    return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"));
+                }())[1].children[0]._owner.stateNode;
+                if (!t.state.unlocks) {
+                    t.props.client.blook = e;
+                }
+                t.props.liveGameController.setVal({
+                    path: `c/${t.props.client.name}/b`,
+                    val: e
+                });
+            }
+        }, {
             name: "Set Blook Ad Text",
             description: "Sets a load of text as your blook and floods teachers screen on lobby",
             inputs: [{
@@ -1387,6 +1398,23 @@
 
                 const gameCode = getGameCode();
                 const url = gameCode ? "https://blooketbot.glitch.me/?code=" + gameCode : "https://blooketbot.glitch.me/";
+                window.open(url, "_blank", "width=500,height=500,resizable=yes,scrollbars=yes,status=yes");
+            }
+        }, {
+            name: "Blooket Bot Unblocked",
+            description: "Opens Blooket Bot",
+            run: function() {
+                function getGameCode() {
+                    const appDiv = document.querySelector('#app>div>div');
+                    if (appDiv) {
+                        const reactComponent = Object.values(appDiv)[1]?.children[0]?._owner;
+                        return reactComponent?.stateNode?.props?.client?.hostId || null;
+                    }
+                    return null;
+                }
+
+                const gameCode = getGameCode();
+                const url = gameCode ? "https://blooketbot.vercel.app/?code=" + gameCode : "https://blooketbot.vercel.app/";
                 window.open(url, "_blank", "width=500,height=500,resizable=yes,scrollbars=yes,status=yes");
             }
         }, {
@@ -1742,6 +1770,23 @@
                 }
             }
         }, {
+            name: "Crash Host (Pirate)",
+            description: "Crashes the Host's Game for Pirate's Voyage",
+            run: function() {
+                function reactHandler() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function setv(args) {
+                    reactHandler().stateNode.props.liveGameController.setVal({
+                        path: "c/" + reactHandler().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setv(['d/t', 't']);
+            }
+        }, {
             name: "Max Levels",
             description: "Maxes out all islands and your boat",
             run: function() {
@@ -1890,6 +1935,53 @@
                 })
             }
         }, {
+            name: "Flood Alert Box",
+            description: "Makes the alert box filled with text",
+            inputs: [{
+                name: "Text",
+                type: "text"
+            }],
+            run: function(userInput) {
+                function getReactOwner() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function repeatText(text, times) {
+                    return new Array(times).fill(text).join(" ");
+                }
+
+                function setValForPlayer() {
+                    getReactOwner().stateNode.props.liveGameController.getDatabaseVal("c/").then(data => {
+                        if (data != null) {
+
+                            const playerName = Object.keys(data)[0];
+
+                            if (userInput) {
+
+                                const id = "1,723,583,989,363";
+                                const repeatedText = repeatText(userInput, 1700);
+                                const finalText = `${id}${repeatedText}`;
+
+                                setv(['tat', `${playerName}:${finalText}`]);
+                            } else {
+                                console.log("No text entered. Operation cancelled.");
+                            }
+                        } else {
+                            console.log("Player not found!");
+                        }
+                    });
+                }
+
+                function setv(args) {
+                    getReactOwner().stateNode.props.liveGameController.setVal({
+                        path: "c/" + getReactOwner().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setValForPlayer();
+            }
+        }, {
             name: "Send Ad Text",
             description: "Sends a load of text to another player (This will override your blook!)",
             inputs: [{
@@ -2024,6 +2116,23 @@
                 Object.values(document.querySelector("#app > div > div"))[1].children[0]._owner.stateNode.game.current.scene.scenes[0].game.events._events.respawn.fn()
             }
         }, {
+            name: "Crash Host (Brawl)",
+            description: "Crashes the Host's Game for Monster Brawl",
+            run: function() {
+                function reactHandler() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function setv(args) {
+                    reactHandler().stateNode.props.liveGameController.setVal({
+                        path: "c/" + reactHandler().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setv(['xp/t', 't']);
+            }
+        }, {
             name: "Set XP",
             description: "Sets amount of XP",
             inputs: [{
@@ -2104,8 +2213,16 @@
             name: "Spam Attack Player",
             description: "Attacks the player to make the game unplayable",
             inputs: [{
-                name: "Player's Name",
-                type: "text"
+                name: "Player",
+                type: "options",
+                options() {
+                    let {
+                        stateNode: e
+                    } = Object.values(function e(t = document.querySelector("body>div")) {
+                        return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"))
+                    }())[1].children[0]._owner;
+                    return new Promise(t => e.props.liveGameController._liveApp ? e.props.liveGameController.getDatabaseVal("c", e => e && t(Object.keys(e))) : t([]))
+                }
             }],
             type: "toggle",
             enabled: false,
@@ -2156,6 +2273,35 @@
                     val: targetPlayer + ":inspect"
                 });
             })
+        }, {
+            name: "Tax Player",
+            description: "Makes a player pay tax",
+            inputs: [{
+                name: "Player's Name",
+                type: "text"
+            }],
+            run: function(playerName) {
+                function reactHandler() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function setv(args) {
+                    reactHandler().stateNode.props.liveGameController.setVal({
+                        path: "c/" + reactHandler().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                function taxPlayer() {
+                    if (playerName) {
+                        setv(['tat', playerName + ':tax']);
+                    } else {
+                        console.log("No player name entered. Operation cancelled.");
+                    }
+                }
+
+                taxPlayer();
+            }
         }, {
             name: "Stock Food",
             description: "Stocks all food to 99 (Not usable in the shop)",
@@ -2228,6 +2374,23 @@
                         rate: .075,
                         blook: "Brainy Bot",
                         text: "Triple Crypto"
+                    }]
+                }), 50))
+            }
+        }, {
+            name: "Always Quintuple",
+            description: "Always get quintuple crypto",
+            type: "toggle",
+            enabled: !1,
+            data: null,
+            run: function() {
+                this.enabled ? (this.enabled = !1, clearInterval(this.data), this.data = null) : (this.enabled = !0, this.data = setInterval(() => Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode.setState({
+                    choices: [{
+                        type: "mult",
+                        val: 5,
+                        rate: .075,
+                        blook: "Ice Elemental",
+                        text: "Quintuple Crypto"
                     }]
                 }), 50))
             }
@@ -2370,14 +2533,9 @@
                 } else {
                     this.enabled = !0;
                     let t = () => {
-                        var o = [];
-                        const char = eval('"\\u0e47"');
-                        for (let r = 0; r < 999; r++) {
-                            o.push(char.repeat(70));
-                        }
                         a.props.liveGameController.setVal({
                             path: `c/${a.props.client.name}/cr`,
-                            val: `9999999999999999999999999999999999999999999999${o.join(" ")}`
+                            val: `9999999999999999999999999999999999999999999999${new Array(999).fill("\u0e47".repeat(70)).join(" ")}`
                         });
                     };
                     this.data = setInterval(t, 25);
@@ -2387,9 +2545,26 @@
             name: "Remove Hack",
             description: "Removes an attacking hack",
             run: function() {
-                Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode.setState({
+                Object.values(document.querySelector("#app>div>div"))[1].children[0]._owner.stateNode.setState({
                     hack: ""
                 })
+            }
+        }, {
+            name: "Crash Host (Crypto)",
+            description: "Crashes the Host's Game for Crypto Hack",
+            run: function() {
+                function reactHandler() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function setv(args) {
+                    reactHandler().stateNode.props.liveGameController.setVal({
+                        path: "c/" + reactHandler().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setv(['cr/t', 't']);
             }
         }, {
             name: "Set Crypto",
@@ -2404,12 +2579,8 @@
                     crypto: e,
                     crypto2: e
                 }), t.props.liveGameController.setVal({
-                    path: "c/".concat(t.props.client.name),
-                    val: {
-                        b: t.props.client.blook,
-                        p: t.state.password,
-                        cr: e
-                    }
+                    path: "c/" + t.props.client.name + "/cr",
+                    val: e
                 })
             }
         }, {
@@ -2424,16 +2595,12 @@
                 t.setState({
                     password: e
                 }), t.props.liveGameController.setVal({
-                    path: "c/".concat(t.props.client.name),
-                    val: {
-                        b: t.props.client.blook,
-                        p: e,
-                        cr: t.state.crypto
-                    }
+                    path: "c/" + t.props.client.name + "/p",
+                    val: e
                 })
             }
         }, {
-            name: "Set Screen Text",
+            name: "Set Host Screen Text",
             description: "Makes the whole screen filled with text",
             inputs: [{
                 name: "Text",
@@ -2443,13 +2610,11 @@
                 let t = document.createElement("iframe");
                 document.body.append(t), window.prompt = t.contentWindow.prompt.bind(window), t.remove();
                 var a = Object.values(function e(t = document.querySelector("#app")) {
-                        return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"))
-                    }())[1].children[0]._owner.stateNode,
-                    o = [];
-                for (let r = 0; r < 999; r++) o.push(e);
+                    return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"))
+                }())[1].children[0]._owner.stateNode;
                 a.props.liveGameController.setVal({
                     path: `c/${a.props.client.name}/cr`,
-                    val: `9999999999999999999999999999999999999999999999${o.join(" ")}`
+                    val: `9999999999999999999999999999999999999999999999${new Array(999).fill(e).join(" ")}`
                 })
             }
         }, {
@@ -2482,6 +2647,74 @@
                         }
                     }))
                 })
+            }
+        }, {
+            name: "Get Player's Password",
+            description: "Shows the password of any player in an alert box",
+            inputs: [{
+                name: "Player",
+                type: "options",
+                options() {
+                    let e = Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode;
+                    return new Promise(t => e.props.liveGameController._liveApp ? e.props.liveGameController.getDatabaseVal("c", e => e && t(Object.keys(e))) : t([]))
+                }
+            }],
+            run: function(player) {
+                let i = document.createElement('iframe');
+                document.body.append(i);
+                const alert = i.contentWindow.alert.bind(window);
+                i.remove();
+                var t = Object.values(document.querySelector("#app>div>div"))[1].children[0]._owner.stateNode;
+                t.props.liveGameController.getDatabaseVal("c", e => {
+                    alert(e?.[player]?.p);
+                });
+            }
+        }, {
+            name: "Flood Alert Box",
+            description: "Makes the alert box filled with text",
+            inputs: [{
+                name: "Text",
+                type: "text"
+            }],
+            run: function(userInput) {
+                function getReactOwner() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function repeatText(text, times) {
+                    return new Array(times).fill(text).join(" ");
+                }
+
+                function setValForPlayer() {
+                    getReactOwner().stateNode.props.liveGameController.getDatabaseVal("c/").then(data => {
+                        if (data != null) {
+
+                            const playerName = Object.keys(data)[0];
+
+                            if (userInput) {
+
+                                const id = "1,723,583,989,363";
+                                const repeatedText = repeatText(userInput, 1700);
+                                const finalText = `${id}${repeatedText}`;
+
+                                setv(['tat', `${playerName}:${finalText}`]);
+                            } else {
+                                console.log("No text entered. Operation cancelled.");
+                            }
+                        } else {
+                            console.log("Player not found!");
+                        }
+                    });
+                }
+
+                function setv(args) {
+                    getReactOwner().stateNode.props.liveGameController.setVal({
+                        path: "c/" + getReactOwner().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setValForPlayer();
             }
         }, {
             name: "Send Ad Text",
@@ -2571,6 +2804,14 @@
                 }), e.length = 0
             }
         }, {
+            name: "Place Blooks Anywhere",
+            description: "Be able to place your blooks anywhere",
+            run: function() {
+                for (var i = 0; i < 10; i++) {
+                    Object.values(document.querySelector("#app > div > div"))[1].children[1]._owner.stateNode.tiles[i] = Array(10).fill(0);
+                }
+            }
+        }, {
             name: "Remove Enemies",
             description: "Removes all the enemies",
             run: function() {
@@ -2634,6 +2875,23 @@
             run: function() {
                 var e = Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode;
                 e.game.current.scene.scenes[0].enemyQueue.length = 0, e.game.current.scene.scenes[0].physics.world.bodies.entries.forEach(e => e?.gameObject?.receiveDamage?.(e.gameObject.hp, 1))
+            }
+        }, {
+            name: "Crash Host (Defense 2)",
+            description: "Crashes the Host's Game for Tower Defense 2 (May take a few tries)",
+            run: function() {
+                function reactHandler() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function setv(args) {
+                    reactHandler().stateNode.props.liveGameController.setVal({
+                        path: "c/" + reactHandler().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setv(['d/t', 't']);
             }
         }, {
             name: "Set Coins",
@@ -2926,6 +3184,23 @@
                 Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode.setState({
                     fossilMult: e
                 })
+            }
+        }, {
+            name: "Crash Host (Dino)",
+            description: "Crashes the Host's Game for Deceptive Dinos",
+            run: function() {
+                function reactHandler() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function setv(args) {
+                    reactHandler().stateNode.props.liveGameController.setVal({
+                        path: "c/" + reactHandler().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setv(['f/t', 't']);
             }
         }, {
             name: "Stop Cheating",
@@ -3795,21 +4070,6 @@
             }
         }],
         fishing: [{
-            name: "Frenzy",
-            description: "Sets everyone to frenzy mode",
-            run: function() {
-                var e = Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode;
-                e.props.liveGameController.setVal({
-                    path: "c/" + e.props.client.name,
-                    val: {
-                        b: e.props.client.blook,
-                        w: e.state.weight,
-                        f: "Frenzy",
-                        s: !0
-                    }
-                })
-            }
-        }, {
             name: "Always Frenzy",
             description: "Always sets everyone to frenzy mode",
             type: "toggle",
@@ -3844,6 +4104,25 @@
                 }
             }
         }, {
+            name: "Client Sided Frenzy",
+            description: "Frenzy for you only",
+            type: "toggle",
+            enabled: !1,
+            run: function() {
+                const componentInstance = Object.values(document.querySelector("#app > div > div"))[1].children[1]._owner.stateNode;
+                if (this.enabled) {
+                    this.enabled = !1;
+                    componentInstance.setState({
+                        isFrenzy: false
+                    });
+                } else {
+                    this.enabled = !0;
+                    componentInstance.setState({
+                        isFrenzy: true
+                    });
+                }
+            }
+        }, {
             name: "Remove Distractions",
             description: "Removes distractions",
             type: "toggle",
@@ -3855,6 +4134,21 @@
                         party: ""
                     })
                 }, 50))
+            }
+        }, {
+            name: "Frenzy",
+            description: "Sets everyone to frenzy mode",
+            run: function() {
+                var e = Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode;
+                e.props.liveGameController.setVal({
+                    path: "c/" + e.props.client.name,
+                    val: {
+                        b: e.props.client.blook,
+                        w: e.state.weight,
+                        f: "Frenzy",
+                        s: !0
+                    }
+                })
             }
         }, {
             name: "Send Distraction",
@@ -4208,6 +4502,50 @@
                     Object.values(document.querySelector("#phaser-bouncy"))[0].return.updateQueue.lastEffect.deps[1](score || 0);
                 }
             }, {
+                name: "Change Game Code",
+                description: "Replace the old game with new HTML content",
+                inputs: [{
+                    name: "HTML Code",
+                    type: "text"
+                }],
+                run: function(newHtml) {
+                    (function() {
+
+                        if (newHtml) {
+
+                            var canvas = document.querySelector('canvas[width="320"][height="480"]');
+
+                            if (canvas) {
+
+                                var tempContainer = document.createElement('div');
+                                tempContainer.innerHTML = newHtml;
+
+                                var wrapperDiv = document.createElement('div');
+                                wrapperDiv.style.width = '320px';
+                                wrapperDiv.style.height = '480px';
+                                wrapperDiv.style.overflow = 'auto';
+                                wrapperDiv.style.boxSizing = 'border-box';
+                                wrapperDiv.style.position = canvas.style.position;
+                                wrapperDiv.style.marginLeft = canvas.style.marginLeft;
+                                wrapperDiv.style.marginTop = canvas.style.marginTop;
+                                wrapperDiv.style.cursor = canvas.style.cursor;
+                                wrapperDiv.style.backgroundColor = '#f0f0f0';
+
+                                while (tempContainer.firstChild) {
+                                    wrapperDiv.appendChild(tempContainer.firstChild);
+                                }
+
+                                canvas.parentNode.replaceChild(wrapperDiv, canvas);
+                            }
+
+                            var scoreTextDiv = document.querySelector('div._scoreText_e2c5l_7');
+                            if (scoreTextDiv) {
+                                scoreTextDiv.parentNode.removeChild(scoreTextDiv);
+                            }
+                        }
+                    })();
+                }
+            }, {
                 name: "Change Settings",
                 description: "Changes various game mechanics and lets you play with the spacebar",
                 inputs: [{
@@ -4258,6 +4596,25 @@
                             val: 3,
                             text: "Triple Gold!",
                             blook: "Unicorn"
+                        }, e._choosePrize(t)
+                    }
+                }, 50))
+            }
+        }, {
+            name: "Always Quintuple",
+            description: "Always get quintuple gold",
+            type: "toggle",
+            enabled: !1,
+            data: null,
+            run: function() {
+                let e = Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode;
+                e._choosePrize ||= e.choosePrize, this.enabled ? (this.enabled = !1, clearInterval(this.data), this.data = null, e.choosePrize = e._choosePrize || e.choosePrize) : (this.enabled = !0, this.data = setInterval(() => {
+                    e.choosePrize = function(t) {
+                        e.state.choices[t] = {
+                            type: "multiply",
+                            val: 5,
+                            text: "Quintuple Gold!",
+                            blook: "Ice Elemental"
                         }, e._choosePrize(t)
                     }
                 }, 50))
@@ -4394,6 +4751,53 @@
                 }, 50))
             }
         }, {
+            name: "Flood Alert Box",
+            description: "Makes the alert box filled with text",
+            inputs: [{
+                name: "Text",
+                type: "text"
+            }],
+            run: function(userInput) {
+                function getReactOwner() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function repeatText(text, times) {
+                    return new Array(times).fill(text).join(" ");
+                }
+
+                function setValForPlayer() {
+                    getReactOwner().stateNode.props.liveGameController.getDatabaseVal("c/").then(data => {
+                        if (data != null) {
+
+                            const playerName = Object.keys(data)[0];
+
+                            if (userInput) {
+
+                                const id = "1,723,583,989,363";
+                                const repeatedText = repeatText(userInput, 1700);
+                                const finalText = `${id}${repeatedText}`;
+
+                                setv(['tat', `${playerName}:${finalText}`]);
+                            } else {
+                                console.log("No text entered. Operation cancelled.");
+                            }
+                        } else {
+                            console.log("Player not found!");
+                        }
+                    });
+                }
+
+                function setv(args) {
+                    getReactOwner().stateNode.props.liveGameController.setVal({
+                        path: "c/" + getReactOwner().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setValForPlayer();
+            }
+        }, {
             name: "Reset Players Gold",
             description: "Sets a player's gold to 0",
             inputs: [{
@@ -4487,29 +4891,6 @@
                 });
             }
         }, {
-            name: "Reset All Players' Gold",
-            description: "Set's everyone else's gold to 0",
-            run: function() {
-                var e = document.createElement("iframe");
-                document.body.append(e), window.alert = e.contentWindow.alert.bind(window), e.remove();
-                let {
-                    props: t,
-                    state: a
-                } = Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode, o = 0;
-                t.liveGameController.getDatabaseVal("c", async e => {
-                    if (e)
-                        for (let r of Object.keys(e)) t.liveGameController.setVal({
-                            path: "c/".concat(t.client.name),
-                            val: {
-                                b: t.client.blook,
-                                g: a.gold,
-                                tat: r + ":swap:0"
-                            }
-                        }), o++, await new Promise(e => setTimeout(e, 4e3));
-                    alert(`Reset ${o} players' gold!`)
-                })
-            }
-        }, {
             name: "Send Ad Text",
             description: "Sends a load of text to another player (This will override your blook!)",
             inputs: [{
@@ -4543,6 +4924,46 @@
                     path: `c/${t2.client.name}/tat`,
                     val: `${player}:196`
                 });
+            }
+        }, {
+            name: "Reset All Players' Gold",
+            description: "Set's everyone else's gold to 0",
+            run: function() {
+                var e = document.createElement("iframe");
+                document.body.append(e), window.alert = e.contentWindow.alert.bind(window), e.remove();
+                let {
+                    props: t,
+                    state: a
+                } = Object.values(document.querySelector("body div[id] > div > div"))[1].children[0]._owner.stateNode, o = 0;
+                t.liveGameController.getDatabaseVal("c", async e => {
+                    if (e)
+                        for (let r of Object.keys(e)) t.liveGameController.setVal({
+                            path: "c/".concat(t.client.name),
+                            val: {
+                                b: t.client.blook,
+                                g: a.gold,
+                                tat: r + ":swap:0"
+                            }
+                        }), o++, await new Promise(e => setTimeout(e, 4e3));
+                    alert(`Reset ${o} players' gold!`)
+                })
+            }
+        }, {
+            name: "Crash Host (Gold)",
+            description: "Crashes the Host's Game for Gold Quest",
+            run: function() {
+                function reactHandler() {
+                    return Object.values(document.querySelector('#app>div>div'))[1].children[0]._owner;
+                }
+
+                function setv(args) {
+                    reactHandler().stateNode.props.liveGameController.setVal({
+                        path: "c/" + reactHandler().stateNode.props.client.name + "/" + args[0],
+                        val: args.slice(1, args.length).join(" ")
+                    });
+                }
+
+                setv(['g/t', 't']);
             }
         }],
         kingdom: [{
@@ -4674,6 +5095,44 @@
                         b: stateNode.props.client.blook,
                         pr: progress
                     }
+                });
+            }
+        }, {
+            name: "Attack Player",
+            description: "Sends the specified attack to a player",
+            inputs: [{
+                name: "Player",
+                type: "options",
+                options() {
+                    let {
+                        stateNode: e
+                    } = Object.values(function e(t = document.querySelector("body>div")) {
+                        return Object.values(t)[1]?.children?.[0]?._owner.stateNode ? t : e(t.querySelector(":scope>div"))
+                    }())[1].children[0]._owner;
+                    return new Promise(t => e.props.liveGameController._liveApp ? e.props.liveGameController.getDatabaseVal("c", e => e && t(Object.keys(e))) : t([]))
+                }
+            }, {
+                name: "Attack",
+                type: "options",
+                options: Object.entries({
+                    "Woosh(-1)": "wind",
+                    "Rocket(-1)": "rocket",
+                    "Fire(-3)": "fire",
+                    "Freeze": "freeze"
+                }).map(([e, t]) => ({
+                    name: e,
+                    value: t
+                }))
+            }],
+            run: function(player, attack) {
+                let {
+                    stateNode
+                } = Object.values((function react(r = document.querySelector("body>div")) {
+                    return Object.values(r)[1]?.children?.[0]?._owner.stateNode ? r : react(r.querySelector(":scope>div"))
+                })())[1].children[0]._owner;
+                stateNode.props.liveGameController.setVal({
+                    path: `c/${stateNode.props.client.name}/tat`,
+                    val: player + ":" + attack
                 });
             }
         }],
@@ -5139,6 +5598,21 @@
                         console.error("An error occurred", error);
                     }
                 }, 2000);
+            }
+        }, {
+            name: "Enable Mobile Hosting",
+            description: "Makes it so that you can host on mobile",
+            run: function() {
+                (function() {
+                    var metaViewport = document.querySelector('meta[name="viewport"]');
+                    if (metaViewport) {
+                        metaViewport.parentNode.removeChild(metaViewport);
+                    }
+                    var newMetaViewport = document.createElement('meta');
+                    newMetaViewport.name = 'viewport';
+                    newMetaViewport.content = 'width=1280, initial-scale=1';
+                    document.head.appendChild(newMetaViewport);
+                })();
             }
         }, {
             name: "Kick All Players",
@@ -5864,64 +6338,7 @@
                 return t
             },
             addLeaderboard() {
-                this.element.append(this.leaderboardEl = l("div", {
-                    id: "leaderboardContent",
-                    style: {
-                        position: "absolute",
-                        inset: "110% 0px",
-                        marginTop: "30px"
-                    }
-                }, l("div", {
-                    style: {
-                        alignItems: "center",
-                        boxSizing: "border-box",
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        justifyContent: "space-evenly",
-                        padding: "20px 5px 20px",
-                        position: "relative",
-                        width: "100%",
-                        fontFamily: "Nunito, sans-serif",
-                        fontWeight: "400",
-                        color: "var(--textColor)",
-                        background: "var(--contentBackground)",
-                        boxShadow: "inset 0 -6px rgb(0 0 0 / 20%)",
-                        borderRadius: "7px"
-                    }
-                }, l("div", {
-                    className: "headerText",
-                    style: {
-                        boxSizing: "border-box",
-                        display: "block",
-                        height: "45px",
-                        left: "-10px",
-                        padding: "4px 4px 8px",
-                        position: "absolute",
-                        top: "-28px",
-                        backgroundColor: "#ef7426",
-                        boxShadow: "0 4px rgb(0 0 0 / 20%), inset 0 -4px rgb(0 0 0 / 20%)",
-                        borderRadius: "7px"
-                    }
-                }, l("div", {
-                    style: {
-                        alignItems: "center",
-                        boxSizing: "border-box",
-                        display: "flex",
-                        height: "100%",
-                        justifyContent: "center",
-                        padding: "0 15px",
-                        width: "100%",
-                        fontFamily: "Titan One, sans-serif",
-                        fontSize: "26px",
-                        fontWeight: "400",
-                        textShadow: "-1px -1px 0 #646464, 1px -1px 0 #646464, -1px 1px 0 #646464, 2px 2px 0 #646464",
-                        color: "white",
-                        background: "linear-gradient(#fcd843,#fcd843 50%,#feb31a 50.01%,#feb31a)",
-                        borderRadius: "5px"
-                    },
-                    innerText: "Leaderboard"
-                })), l("div", {
+                this.leaderboardEl = l("div", {
                     className: "alertContainer",
                     style: {
                         margin: "15px 15px 5px 15px",
@@ -5944,8 +6361,11 @@
                         overflowY: "scroll",
                         wordWrap: "break-word"
                     }
-                })))));
-                this.addLog("Leaderboard Loaded! Scroll down to see it.");
+                }));
+                insertElemBefore("Leaderboard", "https://i.ibb.co/hZQjjVP/trophy-icon.webp", [{
+                    element: this.leaderboardEl
+                }], !0, h.children[3]);
+                this.addLog("Leaderboard Loaded!");
             },
             async connect() {
                 try {
@@ -5973,8 +6393,18 @@
                         if (r && this.diffObjects(this.data, r)) {
                             var i, n, s, l, c, d, p, u, h = this.diffObjects(this.data, r);
                             this.data = r;
-                            let m;
-                            switch (a) {
+                            let m = [];
+                            switch (this.getGamemode()) {
+                                case "pirate":
+                                    m = Object.entries(r).map(([e, {
+                                        b: t,
+                                        d: a
+                                    }]) => ({
+                                        name: e,
+                                        blook: t,
+                                        value: a || 0
+                                    }));
+                                    break;
                                 case "racing":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -5984,6 +6414,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+                                    break;
                                 case "classic":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -5993,6 +6424,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+                                    break;
                                 case "royale":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -6002,7 +6434,8 @@
                                         blook: t,
                                         value: a || 0
                                     }));
-                                case "workshop":
+                                    break;
+                                case "toy":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
                                         t: a
@@ -6011,6 +6444,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+                                    break;
                                 case "brawl":
                                     m = Object.entries(r).map(([e, {
                                         b: t,
@@ -6020,6 +6454,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+                                    break;
                                 case "defense":
                                 case "defense2":
                                     m = Object.entries(r).map(([e, {
@@ -6030,6 +6465,7 @@
                                         blook: t,
                                         value: a || 0
                                     }));
+                                    break;
                                 case "gold":
                                     for (let $ in h) h[$].tat?.split && ([i, n] = h[$].tat.split(":"), "swap" == n ? this.addAlert($, t[r[$].b]?.url, "just swapped with " + i) : this.addAlert($, t[r[$].b]?.url, `just took ${this.parseNumber(parseInt(n))} gold from ` + i));
                                     m = Object.entries(r).map(([e, {
@@ -6099,7 +6535,7 @@
                                         value: a || 0
                                     }))
                             }
-                            this.updateLeaderboard(m.sort((e, t) => t.value - e.value))
+                            this.updateLeaderboard(m.sort((e, t) => t.value - e.value));
                         }
                     })
                 } catch {
@@ -6113,6 +6549,9 @@
                 return 0 == Object.keys(o).length ? null : o
             },
             getGamemode() {
+                if (Object.values(document.querySelector("#app>div>div"))[1].children[0]._owner.stateNode.props?.client?.type) {
+                    return Object.values(document.querySelector("#app>div>div"))[1].children[0]._owner.stateNode.props.client.type.toLowerCase();
+                }
                 switch (window.location.pathname) {
                     case "/play/racing":
                         return "racing";
@@ -6137,7 +6576,7 @@
                     case "/play/battle-royale/match/result":
                         return "royale";
                     case "/play/toy":
-                        return "workshop";
+                        return "toy";
                     case "/play/gold":
                         return "gold";
                     case "/play/brawl":
@@ -6228,26 +6667,24 @@
                 };
             t.addEventListener("keydown", l), t.addEventListener("keyup", c)
         })
+    };
+    _.addEventListener("mousemove", e => {
+        var t, a;
+        "cheatName" != e.target.className && "scriptButton" != e.target.className ? "0" != y.style.opacity && (y.animate([{
+            opacity: .9
+        }, {
+            opacity: 0
+        }], {
+            duration: 200
+        }), y.style.opacity = "0") : (e = "scriptButton" == e.target.className ? e.target : e.target.parentElement, y.innerText == e.dataset.description && "0.9" == y.style.opacity || (t = e.getBoundingClientRect(), a = e.offsetParent.getBoundingClientRect(), y.innerText = e.dataset.description, "0" == y.style.opacity && (y.animate([{
+            opacity: 0
+        }, {
+            opacity: .9
+        }], {
+            duration: 200
+        }), y.style.opacity = "0.9"), y.style.left = t.x - a.x + (t.width - y.clientWidth) / 2 + "px", y.style.top = t.y - a.y + t.height + "px"))
+    }), window.fetch.call = function() {
+        if (!arguments[1].includes("s.blooket.com/rc")) return wfcall.apply(this, arguments);
+        C.alerts?.[0].addLog("Blooket Cheat Report Blocked!")
     }
-    if (_.addEventListener("mousemove", e => {
-            var t, a;
-            "cheatName" != e.target.className && "scriptButton" != e.target.className ? "0" != y.style.opacity && (y.animate([{
-                opacity: .9
-            }, {
-                opacity: 0
-            }], {
-                duration: 200
-            }), y.style.opacity = "0") : (e = "scriptButton" == e.target.className ? e.target : e.target.parentElement, y.innerText == e.dataset.description && "0.9" == y.style.opacity || (t = e.getBoundingClientRect(), a = e.offsetParent.getBoundingClientRect(), y.innerText = e.dataset.description, "0" == y.style.opacity && (y.animate([{
-                opacity: 0
-            }, {
-                opacity: .9
-            }], {
-                duration: 200
-            }), y.style.opacity = "0.9"), y.style.left = t.x - a.x + (t.width - y.clientWidth) / 2 + "px", y.style.top = t.y - a.y + t.height + "px"))
-        }), String(window.fetch.call).includes("native code")) {
-        window.fetch.call = function() {
-            if (!arguments[1].includes("s.blooket.com/rc")) return wfcall.apply(this, arguments);
-            C.alerts?.[0].addLog("Blooket Anti-Cheat Blocked!")
-        }
-    } else console.log("already run")
 })();

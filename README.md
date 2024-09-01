@@ -14,6 +14,7 @@
 - [x] Use any Banner
 - [x] Change Name ingame
 - [x] In-Game Leaderboard
+- [x] Custom Blooks
 
 
 ## Star History
@@ -70,6 +71,11 @@ You should use the scripts ending in ".min.js", as using the others will have er
 <details><summary><h3>Can you give me infinite tokens / bypass daily limit / permanently give me blooks / change pack luck?</h3></summary>
 
 No, these are things we would've already done if they were possible, they're managed on the backend of Blooket so we can't modify them
+</details>
+
+<details><summary><h3>Who made made and got those custom blooks in the get more blooks hack?</h3></summary>
+
+The majority of those blooks are from Blacket and Pixelit, the rest were made from iBlooket, applesaucy411 (Reddit), DDragonYT (Reddit), Cerulean_MC (Reddit), and gengarfromfnaf (Discord). Ploopit Blooks are coming soon! triangulet maybe... (slim chance)
 </details>
 
 

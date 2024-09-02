@@ -75,7 +75,7 @@ No, these are things we would've already done if they were possible, they're man
 
 <details><summary><h3>Who made/got those custom blooks in the get more blooks hack?</h3></summary>
 
-The majority of those blooks are from Blacket and Pixelit, the rest were made from iBlooket, applesaucy411 (Reddit), DDragonYT (Reddit), Cerulean_MC (Reddit), and gengarfromfnaf (Discord). Ploopit Blooks are coming soon! triangulet maybe... (slim chance)
+The majority of those blooks are from Blacket and Pixelit, the rest were made from iBlooket, applesaucy411 (Reddit), DDragonYT (Reddit), Cerulean_MC (Reddit), and gengarfromfnaf (Discord). Ploopit Blooks are coming soon! maybe triangulet... (slim chance)
 </details>
 
 

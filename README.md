@@ -17,18 +17,7 @@
 - [x] Custom Blooks
 
 
-## Star History
 
-<a href="https://star-history.com/#DannyDan0167/Blooket-Cheats-Plus&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=DannyDan0167/Blooket-Cheats-Plus&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=DannyDan0167/Blooket-Cheats-Plus&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=DannyDan0167/Blooket-Cheats-Plus&type=Date" />
- </picture>
-</a>
-
-
-[![Hits](https://hits.sh/github.com/DannyDan0167/Blooket-Cheats-Plus.svg)](https://hits.sh/github.com/DannyDan0167/Blooket-Cheats-Plus/)
 
 ## Information
 
